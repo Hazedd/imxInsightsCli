@@ -4,17 +4,20 @@ name: Build imxInsights CLI apps
 
 on:
   workflow_call:
+
   push:
     branches: [ "master", "refactor*", "feature-*"]
+
   pull_request:
     branches: [ "master", "refactor*", "feature-*"]
+
   repository_dispatch:
     types: [build_cli_apps]
 
 jobs:
+
   bake-cli-apps:
     runs-on: windows-latest
-    # runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
@@ -38,8 +41,7 @@ jobs:
 
       - name: List folder structure and files
         run: |
-          dir /s /b /A:D
-          dir /s /b /A:A
+          tree
         
 
 #      - name: Bake cli apps with PyInstaller
