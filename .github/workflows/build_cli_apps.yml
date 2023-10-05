@@ -39,15 +39,6 @@ jobs:
           pip install flit
           flit install --deps develop
 
-      - name: List folder structure and files
-        run: |
-          pip show imxInsights
-
-      - name: Find Python Executable
-        run: |
-          echo "${{ env.pythonLocation }}"
-          tree ${{ env.pythonLocation }}
-
       - name: Bake cli apps with PyInstaller
         run: |
           python -m PyInstaller imxInsightsCli/imx_diff/imx_to_excel.py --onefile --add-data "${{ env.pythonLocation }}/Lib/site-packages/imxInsights/custom_puic_config.yaml:imxInsights/."
