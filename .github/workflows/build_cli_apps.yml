@@ -46,6 +46,7 @@ jobs:
       - name: Find Python Executable
         run: |
           echo "${{ env.pythonLocation }}"
+          tree ${{ env.pythonLocation }}
 
 #      - name: Bake cli apps with PyInstaller
 #        run: |
