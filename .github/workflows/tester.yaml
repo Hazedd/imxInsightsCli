@@ -1,0 +1,13 @@
+name: Triggered by other build apps
+
+on:
+  repository_dispatch:
+    types:
+      - build-cli-app-event
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Triggered Workflow
+        run: echo "This workflow was triggered using repository_dispatch."."

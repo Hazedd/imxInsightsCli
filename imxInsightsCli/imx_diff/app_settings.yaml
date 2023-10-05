@@ -1,0 +1,6 @@
+!!omap
+- imx_file_path_1: C:\Users\Hzd\Downloads\IMX_E-R50008_EKB_Perceel_2_V1_4_5_0_0_rebased_valid.xml
+- imx_situation_1: InitialSituation
+- imx_file_path_2: C:\Users\Hzd\Downloads\IMX_E-R50008_EKB_Perceel_2_V1_4_5_0_0_rebased_valid.xml
+- imx_situation_2: NewSituation
+- output_path: .
