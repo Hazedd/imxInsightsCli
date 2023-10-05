@@ -3,6 +3,11 @@ name: Build imxInsights CLI apps
 # https://github.com/marketplace/actions/trigger-external-workflow
 
 on:
+  workflow_call:
+  push:
+    branches: [ "master", "refactor*", "feature-*"]
+  pull_request:
+    branches: [ "master", "refactor*", "feature-*"]
   repository_dispatch:
     types: [build_cli_apps]
 
@@ -29,6 +34,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install flit
           flit install --deps develop
+
+      - name: XDTesting Print Directory Structure
+        uses: FiorelaCiroku/XDTesting-Print-Directory-Structure@v1.0.2
 
       - name: Bake cli apps with PyInstaller
         run: |
