@@ -33,34 +33,33 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-#      - name: Install dependencies
-#        run: |
-#          python -m pip install --upgrade pip
-#          pip install flit
-#          flit install --deps develop
-#
-#      - name: List folder structure and files
-#        run: |
-#          pip show imxInsights
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flit
+          flit install --deps develop
+
+      - name: List folder structure and files
+        run: |
+          pip show imxInsights
 
       - name: Find Python Executable
         run: |
           echo "${{ env.pythonLocation }}"
           tree ${{ env.pythonLocation }}
 
-#      - name: Bake cli apps with PyInstaller
-#        run: |
-#          python -m PyInstaller imxInsightsCli/imx_diff/imx_to_excel.py --onefile --add-data "${{ env.pythonLocation }}/Lib/site-packages/imxInsights/custom_puic_config.yaml:imxInsights/."
+      - name: Bake cli apps with PyInstaller
+        run: |
+          python -m PyInstaller imxInsightsCli/imx_diff/imx_to_excel.py --onefile --add-data "${{ env.pythonLocation }}/Lib/site-packages/imxInsights/custom_puic_config.yaml:imxInsights/."
 
+      - name: Copy imxInsights yaml settings to IMX diff dist folder
+        run: |
+          cp -r ${{ github.workspace }}/imxInsightsCli/imx_diff/app_settings.yaml ${{ github.workspace }}/dist/
 
-#      - name: Copy imxInsights yaml settings to IMX diff dist folder
-#        run: |
-#          cp -r ${{ github.workspace }}/imxInsightsCli/imx_diff/app_settings.yaml ${{ github.workspace }}/dist/
-#
-#      - name: Create IMX diff artifact
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: windows_cli_diff_app
-#          path: |
-#            ${{ github.workspace }}/dist/imx_to_excel.exe
-#            ${{ github.workspace }}/dist/app_settings.yaml
+      - name: Create IMX diff artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: windows_cli_diff_app
+          path: |
+            ${{ github.workspace }}/dist/imx_to_excel.exe
+            ${{ github.workspace }}/dist/app_settings.yaml
