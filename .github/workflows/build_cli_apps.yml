@@ -38,7 +38,9 @@ jobs:
 
       - name: List folder structure and files
         run: |
-          dir /s /b /a
+          dir /s /b /A:D
+          dir /s /b /A:A
+        
 
 #      - name: Bake cli apps with PyInstaller
 #        run: |
