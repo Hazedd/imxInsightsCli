@@ -1,0 +1,12 @@
+{
+    "terminal.integrated.env.osx": {
+        "PYTHONPATH": "${workspaceFolder}/imxInsightsCli",
+    },
+    "terminal.integrated.env.linux": {
+        "PYTHONPATH": "${workspaceFolder}/imxInsightsCli",
+    },
+    "terminal.integrated.env.windows": {
+        "PYTHONPATH": "${workspaceFolder}/imxInsightsCli",
+    },
+    "python.envFile": "${workspaceFolder}/.env",
+}
