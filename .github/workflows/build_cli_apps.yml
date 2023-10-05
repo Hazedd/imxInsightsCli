@@ -41,7 +41,7 @@ jobs:
 
       - name: List folder structure and files
         run: |
-          python pip show imxInsights
+          pip show imxInsights
         
 
 #      - name: Bake cli apps with PyInstaller
