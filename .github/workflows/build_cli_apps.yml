@@ -43,9 +43,11 @@ jobs:
 #        run: |
 #          pip show imxInsights
 
-      - name: Find Python Location
+      - name: Find Python Executable
+        shell: powershell
         run: |
-          echo "$PYTHONPATH"
+          $pythonExecutable = $(where python)
+          Write-Host "Python executable is at: $pythonExecutable"
 #          python -m PyInstaller imxInsightsCli/imx_diff/imx_to_excel.py --onefile --add-data "${{$PYTHONPATH}}/Lib/site-packages/imxInsights/custom_puic_config.yaml:imxInsights/."
         
 
