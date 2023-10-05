@@ -36,9 +36,7 @@ jobs:
 
       - name: Find Python Location
         run: |
-          # Search for the Python executable and print its location
-          python_executable=$(which python)
-          echo "Python executable is at: $python_executable"
+          echo "PYTHONPATH=$PYTHONPATH"
 
 #      - name: Install dependencies
 #        run: |
