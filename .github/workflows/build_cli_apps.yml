@@ -36,8 +36,9 @@ jobs:
           pip install flit
           flit install --deps develop
 
-      - name: XDTesting Print Directory Structure
-        uses: FiorelaCiroku/XDTesting-Print-Directory-Structure@v1.0.2
+      - name: List folder structure and files
+        run: |
+          dir /s /b /a
 
 #      - name: Bake cli apps with PyInstaller
 #        run: |
