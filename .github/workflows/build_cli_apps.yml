@@ -12,8 +12,9 @@ on:
     types: [build_cli_apps]
 
 jobs:
-  update-docs:
-    runs-on: windows-latest
+  bake-cli-apps:
+    # runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
@@ -38,18 +39,18 @@ jobs:
       - name: XDTesting Print Directory Structure
         uses: FiorelaCiroku/XDTesting-Print-Directory-Structure@v1.0.2
 
-      - name: Bake cli apps with PyInstaller
-        run: |
-          make build-cli-app
-
-      - name: Copy imxInsights yaml settings to IMX diff dist folder
-        run: |
-          cp -r ${{ github.workspace }}/imxInsightsCli/imx_diff/app_settings.yaml ${{ github.workspace }}/dist/
-
-      - name: Create IMX diff artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: windows_cli_diff_app
-          path: |
-            ${{ github.workspace }}/dist/imx_to_excel.exe
-            ${{ github.workspace }}/dist/app_settings.yaml
+#      - name: Bake cli apps with PyInstaller
+#        run: |
+#          make build-cli-app
+#
+#      - name: Copy imxInsights yaml settings to IMX diff dist folder
+#        run: |
+#          cp -r ${{ github.workspace }}/imxInsightsCli/imx_diff/app_settings.yaml ${{ github.workspace }}/dist/
+#
+#      - name: Create IMX diff artifact
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: windows_cli_diff_app
+#          path: |
+#            ${{ github.workspace }}/dist/imx_to_excel.exe
+#            ${{ github.workspace }}/dist/app_settings.yaml
