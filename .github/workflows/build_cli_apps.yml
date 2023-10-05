@@ -33,11 +33,6 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-
-      - name: Find Python Location
-        run: |
-          echo "PYTHONPATH=$PYTHONPATH"
-
 #      - name: Install dependencies
 #        run: |
 #          python -m pip install --upgrade pip
@@ -47,7 +42,14 @@ jobs:
 #      - name: List folder structure and files
 #        run: |
 #          pip show imxInsights
-#
+
+      - name: Find Python Location
+        run: |
+          echo "$PYTHONPATH"
+#          python -m PyInstaller imxInsightsCli/imx_diff/imx_to_excel.py --onefile --add-data "${{$PYTHONPATH}}/Lib/site-packages/imxInsights/custom_puic_config.yaml:imxInsights/."
+        
+
+
 
 #      - name: Bake cli apps with PyInstaller
 #        run: |
