@@ -13,8 +13,8 @@ on:
 
 jobs:
   bake-cli-apps:
-    # runs-on: windows-latest
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
+    # runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
