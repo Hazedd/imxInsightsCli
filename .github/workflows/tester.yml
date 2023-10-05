@@ -1,26 +1,12 @@
-#name: Triggered by other build apps
-#
-#on:
-#  repository_dispatch:
-#    types:
-#      - build-cli-app-event
-#
-#jobs:
-#  build:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Triggered Workflow
-#        run: echo "This workflow was triggered using repository_dispatch."."
-
 name: Repository Dispatch
 
 on:
   repository_dispatch:
-    types: [doc_update]
+    types: [build_cli_app]
 
 jobs:
   update-docs:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "This workflow was triggered using repository_dispatch."."
-
+      - name: Triggered Workflow
+        run: echo "This workflow was triggered using repository_dispatch."."
