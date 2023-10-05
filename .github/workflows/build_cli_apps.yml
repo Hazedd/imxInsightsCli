@@ -44,19 +44,14 @@ jobs:
 #          pip show imxInsights
 
       - name: Find Python Executable
-        shell: powershell
         run: |
-          echo " ${{ env.pythonLocation }}"
-
-#          python -m PyInstaller imxInsightsCli/imx_diff/imx_to_excel.py --onefile --add-data "${{$PYTHONPATH}}/Lib/site-packages/imxInsights/custom_puic_config.yaml:imxInsights/."
-        
-
-
+          echo "${{ env.pythonLocation }}"
 
 #      - name: Bake cli apps with PyInstaller
 #        run: |
-#          make build-cli-app
-#
+#          python -m PyInstaller imxInsightsCli/imx_diff/imx_to_excel.py --onefile --add-data "${{ env.pythonLocation }}/Lib/site-packages/imxInsights/custom_puic_config.yaml:imxInsights/."
+
+
 #      - name: Copy imxInsights yaml settings to IMX diff dist folder
 #        run: |
 #          cp -r ${{ github.workspace }}/imxInsightsCli/imx_diff/app_settings.yaml ${{ github.workspace }}/dist/
