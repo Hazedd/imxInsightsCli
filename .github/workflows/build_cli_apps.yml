@@ -41,7 +41,7 @@ jobs:
 
       - name: Bake cli apps with PyInstaller
         run: |
-          python -m PyInstaller imxInsightsCli/imx_diff/imx_to_excel.py --onefile --add-data "${{ env.pythonLocation }}/Lib/site-packages/imxInsights/custom_puic_config.yaml:imxInsights/."
+          python -m PyInstaller imxInsightsCli/imx_diff/imx_diff.py --onefile --add-data "${{ env.pythonLocation }}/Lib/site-packages/imxInsights/custom_puic_config.yaml:imxInsights/." --icon=imxInsightsCli/imx_diff/diff.ico
 
       - name: Copy imxInsights yaml settings to IMX diff dist folder
         run: |
@@ -53,4 +53,3 @@ jobs:
           name: windows_cli_diff_app
           path: |
             ${{ github.workspace }}/dist/imx_to_excel.exe
-            ${{ github.workspace }}/dist/app_settings.yaml
