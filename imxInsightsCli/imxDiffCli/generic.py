@@ -1,11 +1,11 @@
-from typing import Optional, List
+from typing import List, Optional
 
 from textual import on
 from textual.app import ComposeResult
 from textual.containers import Horizontal
 from textual.validation import Validator
 from textual.widget import Widget
-from textual.widgets import Pretty, Input, Label, Select
+from textual.widgets import Input, Label, Pretty, Select
 
 
 class InputWithLabel(Widget):
@@ -52,16 +52,10 @@ class InputWithLabel(Widget):
 
     def compose(self) -> ComposeResult:
         if self.validators is not None:
-            yield Horizontal(
-                self._label,
-                self._input
-            )
+            yield Horizontal(self._label, self._input)
 
         else:
-            yield Horizontal(
-                self._label,
-                self._input
-            )
+            yield Horizontal(self._label, self._input)
 
         yield Pretty([])
 
@@ -110,7 +104,4 @@ class SelectWithLabel(Widget):
         super().__init__()
 
     def compose(self) -> ComposeResult:
-        yield Horizontal(
-            Label(self.input_label),
-            Select([(option, option) for option in self.options], classes=self._classes, allow_blank=False)
-        )
+        yield Horizontal(Label(self.input_label), Select([(option, option) for option in self.options], classes=self._classes, allow_blank=False))

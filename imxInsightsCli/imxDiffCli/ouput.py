@@ -2,11 +2,11 @@ from pathlib import Path
 
 from textual.app import ComposeResult
 from textual.containers import Horizontal
-from textual.validation import Validator, ValidationResult, Failure
+from textual.validation import Failure, ValidationResult, Validator
 from textual.widget import Widget
 from textual.widgets import Label, Static, Switch
 
-from imxInsightsCli.imx_diff.generic import InputWithLabel
+from imxInsightsCli.imxDiffCli.generic import InputWithLabel
 
 
 class OutputPath(Widget):
@@ -64,7 +64,6 @@ class OutputPath(Widget):
 class OutputPathValidator(Validator):
     def validate(self, value: str) -> ValidationResult:
         """Check if value is valid folder."""
-
         success = True
         fails = []
 

@@ -1,9 +1,9 @@
 import re
 from pathlib import Path
-from typing import Optional, List
+from typing import List, Optional
 
-import pandas as pd
 import openpyxl
+import pandas as pd
 from openpyxl.styles import PatternFill
 from openpyxl.worksheet.worksheet import Worksheet
 
@@ -42,7 +42,7 @@ class ExcelScope:
 
     def set_scope_data(self, scope_excel_file_path: Path):
         df_info_ = pd.read_excel(scope_excel_file_path, sheet_name="info", index_col=0)
-        self.scope_version = scope_version = df_info_.loc["uitwisselscope_version:"][0]
+        self.scope_version = df_info_.loc["uitwisselscope_version:"][0]
 
         df_scope_ = pd.read_excel(scope_excel_file_path, sheet_name="as-dataset", index_col=0)
         df_scope_["index"] = df_scope_["path"] + "/" + df_scope_["target"].replace({".gml:": "."}, regex=True)
@@ -53,16 +53,13 @@ class ExcelScope:
     def set_scope_info(scope_excel_file_path: Path):
         pass
 
-
     def filter_keys(self, key_suffix: str):
         return [
-            value for key, value in self.scope_dict.items() if
-            key.endswith(key_suffix) and
-            key[-len(key_suffix)-1:-len(key_suffix)] in [".", ""]
+            value for key, value in self.scope_dict.items() if key.endswith(key_suffix) and key[-len(key_suffix) - 1 : -len(key_suffix)] in [".", ""]
         ]
 
     def add_scope(self, diff_excel_file_path: Path, out_excel_file_path: Path, scope_types: Optional[List[str]] = None):
-        fill_scoped = PatternFill(start_color='00FF00', end_color='00FF00', fill_type='solid')
+        fill_scoped = PatternFill(start_color="00FF00", end_color="00FF00", fill_type="solid")
 
         def build_header_get_header_row():
             for _ in scope_types:
@@ -81,8 +78,8 @@ class ExcelScope:
         for sheet_name in workbook.sheetnames:
             sheet = workbook[sheet_name]
 
-            if sheet['A1'].value == "index" and sheet['B1'].value == "puic" and sheet['C1'].value == "path":
-                path = sheet['C2'].value
+            if sheet["A1"].value == "index" and sheet["B1"].value == "puic" and sheet["C1"].value == "path":
+                path = sheet["C2"].value
                 excel_remove_autofilter(sheet)
                 last_column_in_header = get_excel_last_column(sheet)
                 header_row = build_header_get_header_row()
@@ -107,4 +104,3 @@ if __name__ == "__main__":
     # excel_scope = ExcelScope(Path("otl-overview-Situation-5_0_0-v3.xlsx"))
     # print(excel_scope)
     # excel_scope.add_scope(Path("diff.xlsx"), Path("your_updated_workbook.xlsx"), ["Is van toepassing", "Invullen door ingenieursbureau"])
-

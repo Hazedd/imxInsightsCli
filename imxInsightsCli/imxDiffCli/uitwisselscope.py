@@ -4,12 +4,12 @@ from typing import Optional
 from textual import on
 from textual.app import ComposeResult
 from textual.containers import Horizontal
-from textual.validation import ValidationResult, Failure, Validator
+from textual.validation import Failure, ValidationResult, Validator
 from textual.widget import Widget
-from textual.widgets import Input, Select, Label, SelectionList
+from textual.widgets import Input, Label, Select, SelectionList
 
-from imxInsightsCli.imx_diff.generic import SelectWithLabel, InputWithLabel
-from imxInsightsCli.imx_diff.scope_add import ExcelScope
+from imxInsightsCli.imxDiffCli.generic import InputWithLabel, SelectWithLabel
+from imxInsightsCli.imxDiffCli.scope_add import ExcelScope
 
 
 class UitwisselScopeExcelPath(Widget):
@@ -55,23 +55,20 @@ class UitwisselScopeExcelPath(Widget):
     def compose(self) -> ComposeResult:
         yield Label(" Uitwisselscope", id="header_id_uitwisselscope")
         yield Horizontal(
-            InputWithLabel("Excel path", optional=True, validators=[ScopeExcelValidator()]),
-            SelectWithLabel("add scope", ["True", "False"])
+            InputWithLabel("Excel path", optional=True, validators=[ScopeExcelValidator()]), SelectWithLabel("add scope", ["True", "False"])
         )
-        yield SelectionList[int](
-            ("missing excel path", "missing", False)
-        )
+        yield SelectionList[int](("missing excel path", "missing", False))
 
     @on(Select.Changed)
     def add_scope_changed(self, message: Select.Changed):
-        add_scope = self.query_one("SelectWithLabel Select").value == 'True'
+        add_scope = self.query_one("SelectWithLabel Select").value == "True"
         if add_scope:
             if not ScopeExcelValidator().validate(self.query_one("InputWithLabel Input").value).is_valid:
                 self.query_one("InputWithLabel Pretty").update("Parameter cant be empty")
         else:
             try:
                 self.query_one("InputWithLabel Pretty").update(self._excel_scope.scope_version)
-            except:
+            except Exception:
                 self.query_one("InputWithLabel Pretty").update("Parameter is optional")
 
     def on_input_changed(self, message: Input.Changed) -> None:
@@ -86,8 +83,8 @@ class UitwisselScopeExcelPath(Widget):
                 selection_list = self.query_one("SelectionList")
                 selection_list.clear_options()
                 selection_list.add_options(scopes)
-            except Exception as e:
-                self.query_one("InputWithLabel Pretty").update(f"File is not a valid uitwisselscope excel")
+            except Exception:
+                self.query_one("InputWithLabel Pretty").update("File is not a valid uitwisselscope excel")
                 self.query_one("SelectionList").clear_options()
                 self._excel_scope = None
         else:
@@ -98,7 +95,6 @@ class UitwisselScopeExcelPath(Widget):
 class ScopeExcelValidator(Validator):
     def validate(self, value: str) -> ValidationResult:
         """Check a imx path is value."""
-
         success = True
         fails = []
 

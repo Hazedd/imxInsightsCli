@@ -9,38 +9,38 @@ install-flit:
 	pip install flit
 
 isort-src:
-	isort ./imxInsights ./tests
+	isort ./imxInsightsCli ./tests
 
 isort-docs:
-	isort ./docs -o imxInsights
+	isort ./docs -o imxInsightsCli
 
 isort-examples:
-	isort ./examples -o imxInsights -p app
+	isort ./examples -o imxInsightsCli -p app
 
 format: isort-src isort-docs isort-examples
 	black .
 
 isort-src-check:
-	isort --check-only ./imxInsights ./tests
+	isort --check-only ./imxInsightsCli ./tests
 
 isort-docs-check:
-	isort --check-only ./docs -o imxInsights
+	isort --check-only ./docs -o imxInsightsCli
 
 isort-examples-check:
-	isort --check-only ./examples -o imxInsights -p app
+	isort --check-only ./examples -o imxInsightsCli -p app
 
 format-check: isort-src-check isort-docs-check
 	black --check .
 
 lint:
-	flake8 ./imxInsights ./tests
+	flake8 ./imxInsightsCli ./tests
 
 typecheck:
-	mypy imxInsights/ tests/
+	mypy imxInsightsCli/ tests/
 
 # todo: make sure in production covar is at least 90%
 test:
-	pytest --cov=imxInsights/ --cov-report=term-missing --cov-fail-under=80
+	pytest --cov=imxInsightsCli/ --cov-report=term-missing --cov-fail-under=80
 
 bumpversion-major:
 	bumpversion major

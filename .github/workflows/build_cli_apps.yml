@@ -41,11 +41,11 @@ jobs:
 
       - name: Bake cli apps with PyInstaller
         run: |
-          python -m PyInstaller imxInsightsCli/imx_diff/imx_diff.py --onefile --add-data "${{ env.pythonLocation }}/Lib/site-packages/imxInsights/custom_puic_config.yaml:imxInsights/." --icon=imxInsightsCli/imx_diff/diff.ico
+          python -m PyInstaller imxInsightsCli/imxDiffCli/imx_diff.py --onefile --add-data "${{ env.pythonLocation }}/Lib/site-packages/imxInsights/custom_puic_config.yaml:imxInsights/." --icon=imxInsightsCli/imxDiffCli/diff.ico
 
-      - name: Copy imxInsights yaml settings to IMX diff dist folder
-        run: |
-          cp -r ${{ github.workspace }}/imxInsightsCli/imx_diff/app_settings.yaml ${{ github.workspace }}/dist/
+#      - name: Copy imxInsights yaml settings to IMX diff dist folder
+#        run: |
+#          cp -r ${{ github.workspace }}/imxInsightsCli/imxDiffCli/app_settings.yaml ${{ github.workspace }}/dist/
 
       - name: Create IMX diff artifact
         uses: actions/upload-artifact@v3

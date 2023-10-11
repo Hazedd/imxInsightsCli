@@ -2,14 +2,13 @@ import re
 from pathlib import Path
 
 from imxInsights import ImxSituationsEnum
-
 from textual.app import ComposeResult
 from textual.containers import Horizontal
 from textual.validation import Failure, ValidationResult, Validator
 from textual.widget import Widget
 from textual.widgets import Label
 
-from imxInsightsCli.imx_diff.generic import InputWithLabel, SelectWithLabel
+from imxInsightsCli.imxDiffCli.generic import InputWithLabel, SelectWithLabel
 
 
 class ImxFilePath(Widget):
@@ -28,7 +27,7 @@ class ImxFilePath(Widget):
         width: 1fr;
     }
     #header_id_imx {
-        width: 100%;            
+        width: 100%;
         text-align: center;
     }
 
@@ -54,10 +53,7 @@ class ImxFilePath(Widget):
         yield Label(f"IMX file {self.imx_a_or_b}", id="header_id_imx")
 
         yield Horizontal(
-            InputWithLabel(
-                "Imx path",
-                validators=[XmlImxFileValidator()]
-            ),
+            InputWithLabel("Imx path", validators=[XmlImxFileValidator()]),
             SelectWithLabel("Situation", [item for item in ImxSituationsEnum]),
         )
 
@@ -65,7 +61,6 @@ class ImxFilePath(Widget):
 class XmlImxFileValidator(Validator):
     def validate(self, value: str) -> ValidationResult:
         """Check a imx path is value."""
-
         success = True
         fails = []
 
@@ -109,9 +104,8 @@ class XmlImxFileValidator(Validator):
     def valid_imx_file(value: str) -> bool:
         file_path = Path(value)
         if file_path.exists():
-            with open(value, 'r', encoding='utf-8') as unknown_file:
+            with open(value, "r", encoding="utf-8") as unknown_file:
                 xml_string = unknown_file.read()
-                if re.search(r'ImSpoor', xml_string) or re.search(r'IMSpoor', xml_string):
+                if re.search(r"ImSpoor", xml_string) or re.search(r"IMSpoor", xml_string):
                     return True
         return False
-

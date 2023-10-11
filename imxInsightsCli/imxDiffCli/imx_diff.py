@@ -1,18 +1,21 @@
 import time
 from pathlib import Path
 
-from textual.app import App, ComposeResult
-from textual.widgets import Markdown, Button, Footer, Header
-from textual.containers import ScrollableContainer, Horizontal
-
-from imxInsights import ImxSituationsEnum, Imx, ImxDiff, __version__ as imxInsightsVersion
+from imxInsights import Imx, ImxDiff, ImxSituationsEnum
+from imxInsights import __version__ as imxInsightsVersion
 from imxInsights.utils.shapely_geojson import dumps
+from textual.app import App, ComposeResult
+from textual.containers import Horizontal, ScrollableContainer
+from textual.widgets import Button, Footer, Header, Markdown
 
 from imxInsightsCli import __version__ as imxDiffCliVersion
-from imxInsightsCli.imx_diff.imx import ImxFilePath, XmlImxFileValidator
-from imxInsightsCli.imx_diff.ouput import OutputPath
-from imxInsightsCli.imx_diff.scope_add import ExcelScope
-from imxInsightsCli.imx_diff.uitwisselscope import UitwisselScopeExcelPath, ScopeExcelValidator
+from imxInsightsCli.imxDiffCli.imx import ImxFilePath, XmlImxFileValidator
+from imxInsightsCli.imxDiffCli.ouput import OutputPath
+from imxInsightsCli.imxDiffCli.scope_add import ExcelScope
+from imxInsightsCli.imxDiffCli.uitwisselscope import (
+    ScopeExcelValidator,
+    UitwisselScopeExcelPath,
+)
 
 
 class ImxDiffApp(App):
@@ -40,17 +43,17 @@ class ImxDiffApp(App):
     }
     """
 
-    EXAMPLE_MARKDOWN = f"""
+    EXAMPLE_MARKDOWN = """
 # Welcome to IMX Diff Version <<APP_VERSION>> using ImxInsights: <<BACKEND_VERSION>>!
 
-IMX Diff CLI solution for comparing IMX files and generating comprehensive insights in Excel format. 
+IMX Diff CLI solution for comparing IMX files and generating comprehensive insights in Excel format.
 Additionally, this tool provides the ability to create GeoJSON files to document the differences between IMX datasets.
 
 ## when interested in a population, just diff same file, same situation 😉.
 
 ### IMX A and B:
-- set the file path to the imx file. 
-- select the situation to diff. 
+- set the file path to the imx file.
+- select the situation to diff.
 - To copy a file path use "control + shift + v" 😊.
 
 ### Uitwisselscope:
@@ -62,16 +65,15 @@ Additionally, this tool provides the ability to create GeoJSON files to document
 - flag for adding the selected scopes to the diff output.
 
 ### Output folder:
-- set the output folder path where a folder called output will be created 
-- overwriting is not implemented and disabled, make sure it's empty
-- If kept empty the root of the application is the output folder. 
+- set the output folder path where a folder called output will be created.
+- overwriting is not implemented and disabled, make sure it's empty.
+- If kept empty the root of the application is the output folder.
 
-
-### Create diff excel
-### Create diff geojsons
-
-
-    """.replace("<<APP_VERSION>>", imxDiffCliVersion).replace("<<BACKEND_VERSION>>", imxInsightsVersion)
+    """.replace(
+        "<<APP_VERSION>>", imxDiffCliVersion
+    ).replace(
+        "<<BACKEND_VERSION>>", imxInsightsVersion
+    )
 
     def compose(self) -> ComposeResult:
         yield Header()
@@ -87,22 +89,18 @@ Additionally, this tool provides the ability to create GeoJSON files to document
                 Button("Create diff Excel", id="create_diff"),
                 Button("Create diff geoJsons", id="create_geojson"),
             ),
-            Markdown(self.EXAMPLE_MARKDOWN)
+            Markdown(self.EXAMPLE_MARKDOWN),
         )
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
-
         if event.button.id in ["create_diff", "create_geojson"]:
-
             file_dict = {}
             errors = []
             warnings = []
 
             files = list(self.query(ImxFilePath))
             for file in files:
-                result = XmlImxFileValidator().validate(
-                    value=file.query_one("InputWithLabel Input").value
-                )
+                result = XmlImxFileValidator().validate(value=file.query_one("InputWithLabel Input").value)
                 if len(result.failures) != 0:
                     errors.append(f"IMX {file.imx_a_or_b}: {' and '.join([item.description.lower() for item in result.failures])}")
 
@@ -110,16 +108,13 @@ Additionally, this tool provides the ability to create GeoJSON files to document
                 if situation is None:
                     errors.append(f"IMX {file.imx_a_or_b}: does not have a selected situation")
 
-                file_dict[file.imx_a_or_b] = {
-                    "file": file.query_one("InputWithLabel Input").value,
-                    "situation": situation
-                }
+                file_dict[file.imx_a_or_b] = {"file": file.query_one("InputWithLabel Input").value, "situation": situation}
 
             # todo: check if situations exist
 
             output_folder = self.query_one("#out_folder Input").value
             if output_folder == "":
-                errors.append(f"Output path cant be empty!")
+                errors.append("Output path cant be empty!")
 
             overwrite = self.query_one("#overwrite").value
             out_path = Path(output_folder)
@@ -135,21 +130,14 @@ Additionally, this tool provides the ability to create GeoJSON files to document
 
             proceed = True
             if len(errors) > 0:
-                self.notify(
-                    "\n".join([item for item in errors]),
-                    title="ERROR", severity="error", timeout=10
-                )
+                self.notify("\n".join([item for item in errors]), title="ERROR", severity="error", timeout=10)
                 proceed = False
 
             if len(warnings) > 0:
-                self.notify(
-                    "\n".join([item for item in warnings]),
-                    title="WARNING", severity="warning", timeout=10
-                )
+                self.notify("\n".join([item for item in warnings]), title="WARNING", severity="warning", timeout=10)
 
             if proceed:
-
-                output_folder = Path(f"{output_folder}\output")
+                output_folder = Path(f"{output_folder}\\output")
                 output_folder.mkdir(parents=True, exist_ok=True)
 
                 imx_file_path_1 = file_dict["A"]["file"]
@@ -177,10 +165,7 @@ Additionally, this tool provides the ability to create GeoJSON files to document
                         with open(f"{geojson_out_path}/{key}.geojson", mode="w") as file:
                             file.write(dumps(value))
 
-                    self.notify(
-                        f"Created geojsons in {output_folder}",
-                        title="SUCCESS", severity="information", timeout=10
-                    )
+                    self.notify(f"Created geojsons in {output_folder}", title="SUCCESS", severity="information", timeout=10)
 
                 elif event.button.id == "create_diff":
                     diff.generate_excel(f"{output_folder}/_.xlsx")
@@ -197,10 +182,7 @@ Additionally, this tool provides the ability to create GeoJSON files to document
                     else:
                         temp_diff.rename(f"{output_folder}/{file_name}")
 
-                    self.notify(
-                        f"Created diff excel in {output_folder}",
-                        title="SUCCESS", severity="information", timeout=10
-                    )
+                    self.notify(f"Created diff excel in {output_folder}", title="SUCCESS", severity="information", timeout=10)
 
 
 if __name__ == "__main__":
