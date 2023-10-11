@@ -20,7 +20,9 @@ dependencies = [
     "pyinstaller",
     "rich",
     "console-menu",
-    "Jinja2",
+    "openpyxl",
+    "textual-fspicker",
+    "textual",
 ]
 
 [project.optional-dependencies]
