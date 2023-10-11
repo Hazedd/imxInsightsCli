@@ -52,4 +52,4 @@ jobs:
         with:
           name: windows_cli_diff_app
           path: |
-            ${{ github.workspace }}/dist/imx_to_excel.exe
+            ${{ github.workspace }}/dist/imx_diff.exe
