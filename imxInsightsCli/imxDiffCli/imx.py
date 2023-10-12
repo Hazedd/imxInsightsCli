@@ -63,22 +63,26 @@ class XmlImxFileValidator(Validator):
         """Check a imx path is value."""
         success = True
         fails = []
-
-        if value == "":
-            fails.append("Parameter cant be empty")
-            success = False
-        else:
-            if not self.is_xml_extension(value):
-                fails.append("File has no .xml extension")
-                success = False
-
-            if not self.file_exists(value):
-                fails.append("File does not exist")
+        try:
+            if value == "":
+                fails.append("Parameter cant be empty")
                 success = False
             else:
-                if not self.valid_imx_file(value):
-                    fails.append("File is not valid IMX file")
+                if not self.is_xml_extension(value):
+                    fails.append("File has no .xml extension")
                     success = False
+
+                if not self.file_exists(value):
+                    fails.append("File does not exist")
+                    success = False
+                else:
+                    if not self.valid_imx_file(value):
+                        fails.append("File is not valid IMX file")
+                        success = False
+
+        except Exception as e:
+            fails.append(f"Unexpected failer {e}")
+            success = False
 
         if success:
             return self.success()

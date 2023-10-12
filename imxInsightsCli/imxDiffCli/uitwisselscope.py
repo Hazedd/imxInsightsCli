@@ -97,18 +97,22 @@ class ScopeExcelValidator(Validator):
         """Check a imx path is value."""
         success = True
         fails = []
+        try:
+            if value == "":
+                fails.append("Parameter cant be empty")
+                success = False
+            else:
+                if not self.is_xlsx_extension(value):
+                    fails.append("File has no .xlsx extension")
+                    success = False
 
-        if value == "":
-            fails.append("Parameter cant be empty")
+                if not self.file_exists(value):
+                    fails.append("File does not exist")
+                    success = False
+
+        except Exception as e:
+            fails.append(f"Unexpected failer {e}")
             success = False
-        else:
-            if not self.is_xlsx_extension(value):
-                fails.append("File has no .xlsx extension")
-                success = False
-
-            if not self.file_exists(value):
-                fails.append("File does not exist")
-                success = False
 
         if success:
             return self.success()
