@@ -23,6 +23,7 @@ dependencies = [
     "openpyxl",
     "textual-fspicker",
     "textual",
+    "Jinja2",
 ]
 
 [project.optional-dependencies]
