@@ -124,7 +124,9 @@ Additionally, this tool provides the ability to create GeoJSON files to document
                 errors.append("output folder is not empty, set flag to overwrite if intended")
 
             uitwisselscope_path_validation = ScopeExcelValidator().validate(self.query_one("UitwisselScopeExcelPath InputWithLabel Input").value)
-            if not uitwisselscope_path_validation.is_valid:
+
+            add_scope = self.query_one("UitwisselScopeExcelPath SelectWithLabel Select").value == "True"
+            if add_scope and not uitwisselscope_path_validation.is_valid:
                 for item in uitwisselscope_path_validation.failures:
                     errors.append(f"Uitwisselscope: {item.description}")
 
@@ -172,7 +174,7 @@ Additionally, this tool provides the ability to create GeoJSON files to document
                     temp_diff = Path(f"{output_folder}/_.xlsx")
                     file_name = f"diff-{time.strftime('%Y%m%d-%H%M%S')}.xlsx"
 
-                    add_scope = self.query_one("UitwisselScopeExcelPath SelectWithLabel Select").value == "True"
+                    # add_scope = self.query_one("UitwisselScopeExcelPath SelectWithLabel Select").value == "True"
                     if add_scope:
                         excel_path = self.query_one("UitwisselScopeExcelPath InputWithLabel Input").value
                         excel_scope = ExcelScope(Path(excel_path))
