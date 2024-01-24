@@ -47,7 +47,7 @@ class ImxDiffApp(App):
     latest_release_on_github = get_latest_release_github("Hazedd", "imxInsightsCli")
 
     if latest_release_on_github is not None and latest_release_on_github.tag_name != imxDiffCliVersion:
-        warning_text = (f"\n⚠️ NEW VERSION AVAILABLE {latest_release_on_github.tag_name}\n")
+        warning_text = (f"\n⚠️ NEW VERSION AVAILABLE {latest_release_on_github.tag_name}!!\n")
 
     EXAMPLE_MARKDOWN = """
 # Welcome to IMX Diff Version <<APP_VERSION>> using ImxInsights: <<BACKEND_VERSION>>!
@@ -60,10 +60,10 @@ Additionally, this tool provides the ability to create GeoJSON files to document
 ### IMX A and B:
 - set the file path to the imx file.
 - select the situation to diff.
-- To copy a file path use "control + shift + v" 😊.
+- to copy a file path use "control + shift + v" 😊,.. remove the '"' on start and end position 😉.
 
 ### Uitwisselscope:
-- Optional we can map the uitwisselscope on the imx properties in the diff, we use a as-dataset sheet containing a path and a target.
+- optional we can map the uitwisselscope on the imx properties in the diff, we use a as-dataset sheet containing a path and a target.
     - the path is the elements route to the object of interest seen from the root (Situation).
     - the target is the attribute path seen from the path.
     - every other column is a scope and can contain True or False.
@@ -73,7 +73,7 @@ Additionally, this tool provides the ability to create GeoJSON files to document
 ### Output folder:
 - set the output folder path where a folder called output will be created.
 - overwriting is not implemented and disabled, make sure it's empty.
-- If kept empty the root of the application is the output folder.
+- if kept empty the root of the application is the output folder.
 
     """.replace(
         "<<APP_VERSION>>", f"{imxDiffCliVersion}"
