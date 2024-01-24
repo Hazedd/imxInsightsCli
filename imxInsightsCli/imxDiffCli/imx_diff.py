@@ -16,6 +16,7 @@ from imxInsightsCli.imxDiffCli.uitwisselscope import (
     ScopeExcelValidator,
     UitwisselScopeExcelPath,
 )
+from imxInsightsCli.imxDiffCli.version_check import get_latest_release_github
 
 
 class ImxDiffApp(App):
@@ -42,10 +43,15 @@ class ImxDiffApp(App):
         height: auto;
     }
     """
+    warning_text = ""
+    latest_release_on_github = get_latest_release_github("Hazedd", "imxInsightsCli")
+
+    if latest_release_on_github is not None and latest_release_on_github.tag_name != imxDiffCliVersion:
+        warning_text = (f"\n⚠️ NEW VERSION AVAILABLE {latest_release_on_github.tag_name}\n")
 
     EXAMPLE_MARKDOWN = """
 # Welcome to IMX Diff Version <<APP_VERSION>> using ImxInsights: <<BACKEND_VERSION>>!
-
+<<WARNING_MSG>>
 IMX Diff CLI solution for comparing IMX files and generating comprehensive insights in Excel format.
 Additionally, this tool provides the ability to create GeoJSON files to document the differences between IMX datasets.
 
@@ -70,9 +76,11 @@ Additionally, this tool provides the ability to create GeoJSON files to document
 - If kept empty the root of the application is the output folder.
 
     """.replace(
-        "<<APP_VERSION>>", imxDiffCliVersion
+        "<<APP_VERSION>>", f"{imxDiffCliVersion}"
     ).replace(
         "<<BACKEND_VERSION>>", imxInsightsVersion
+    ).replace(
+        "<<WARNING_MSG>>", warning_text
     )
 
     def compose(self) -> ComposeResult:
