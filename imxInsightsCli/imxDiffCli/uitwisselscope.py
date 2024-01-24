@@ -55,7 +55,9 @@ class UitwisselScopeExcelPath(Widget):
     def compose(self) -> ComposeResult:
         yield Label(" Uitwisselscope", id="header_id_uitwisselscope")
         yield Horizontal(
-            InputWithLabel("Excel path", optional=True, validators=[ScopeExcelValidator()]), SelectWithLabel("add scope", ["True", "False"])
+            InputWithLabel("Excel path", optional=True, validators=[ScopeExcelValidator()]),
+            SelectWithLabel("add scope", ["False", "True"]),
+            disabled=True
         )
         yield SelectionList[int](("missing excel path", "missing", False))
 
