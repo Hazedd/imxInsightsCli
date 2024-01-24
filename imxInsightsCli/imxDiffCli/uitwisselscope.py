@@ -59,7 +59,7 @@ class UitwisselScopeExcelPath(Widget):
             SelectWithLabel("add scope", ["False", "True"]),
             disabled=True
         )
-        yield SelectionList[int](("missing excel path", "missing", False))
+        yield SelectionList[int](("missing excel path", "missing", False), disabled=True)
 
     @on(Select.Changed)
     def add_scope_changed(self, message: Select.Changed):
