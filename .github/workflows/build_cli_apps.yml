@@ -2,14 +2,15 @@ name: Build imxInsights CLI apps
 
 # https://github.com/marketplace/actions/trigger-external-workflow
 
+
 on:
   workflow_call:
 
-  push:
-    branches: [ "master", "refactor*", "feature-*"]
-
-  pull_request:
-    branches: [ "master", "refactor*", "feature-*"]
+#  push:
+#    branches: [ "master", "refactor*", "feature-*"]
+#
+#  pull_request:
+#    branches: [ "master", "refactor*", "feature-*"]
 
   repository_dispatch:
     types: [build_cli_apps]
@@ -22,7 +23,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.11"]
+        python-version: ["3.12"]
 
     steps:
       - name: Check out
@@ -39,17 +40,24 @@ jobs:
           pip install flit
           flit install --deps develop
 
-      - name: Bake cli apps with PyInstaller
+      - name: Bump version and commit changes
+        # if: ${{ github.event_name == 'workflow_call' }}
         run: |
-          python -m PyInstaller imxInsightsCli/imxDiffCli/imx_diff.py --onefile --add-data "${{ env.pythonLocation }}/Lib/site-packages/imxInsights/custom_puic_config.yaml:imxInsights/." --icon=imxInsightsCli/imxDiffCli/diff.ico
+          make bumpversion-build
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -am "Bump version [skip ci]"  # Skip CI to avoid recursive runs
+          git push
 
-#      - name: Copy imxInsights yaml settings to IMX diff dist folder
+#      - name: Bake cli apps with PyInstaller
 #        run: |
-#          cp -r ${{ github.workspace }}/imxInsightsCli/imxDiffCli/app_settings.yaml ${{ github.workspace }}/dist/
+#          python -m PyInstaller imxInsightsCli/imxDiffCli/imx_diff.py --onefile --add-data "${{ env.pythonLocation }}/Lib/site-packages/imxInsights/custom_puic_config.yaml:imxInsights/." --icon=imxInsightsCli/imxDiffCli/diff.ico
+#
+#      - name: Create IMX diff artifact
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: windows_cli_diff_app
+#          path: |
+#            ${{ github.workspace }}/dist/imx_diff.exe
 
-      - name: Create IMX diff artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: windows_cli_diff_app
-          path: |
-            ${{ github.workspace }}/dist/imx_diff.exe
+      # todo: create release and add artifact

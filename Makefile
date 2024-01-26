@@ -14,10 +14,7 @@ isort-src:
 isort-docs:
 	isort ./docs -o imxInsightsCli
 
-isort-examples:
-	isort ./examples -o imxInsightsCli -p app
-
-format: isort-src isort-docs isort-examples
+format: isort-src isort-docs
 	black .
 
 isort-src-check:
