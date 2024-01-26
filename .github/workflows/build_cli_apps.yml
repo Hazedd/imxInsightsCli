@@ -15,6 +15,9 @@ on:
   repository_dispatch:
     types: [build_cli_apps]
 
+permissions:
+  contents: write
+
 jobs:
 
   bake-cli-apps:
@@ -43,9 +46,11 @@ jobs:
       - name: Bump version and commit changes
         # if: ${{ github.event_name == 'workflow_call' }}
         run: |
+          git config --global user.name 'Your Name'
+          git config --global user.email 'hazedd@users.noreply.github.com'
           make bumpversion-build
           git commit -am "Bump version [skip ci]"  # Skip CI to avoid recursive runs
-          git push https://${{ secrets.TOKEN }}@github.com/Hazedd/imxInsightsCli.git
+          git push
 
 #      - name: Bake cli apps with PyInstaller
 #        run: |
