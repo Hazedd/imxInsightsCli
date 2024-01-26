@@ -6,11 +6,11 @@ name: Build imxInsights CLI apps
 on:
   workflow_call:
 
-#  push:
-#    branches: [ "master", "refactor*", "feature-*"]
-#
-#  pull_request:
-#    branches: [ "master", "refactor*", "feature-*"]
+  push:
+    branches: [ "master", "refactor*", "feature-*"]
+
+  pull_request:
+    branches: [ "master", "refactor*", "feature-*"]
 
   repository_dispatch:
     types: [build_cli_apps]
