@@ -43,24 +43,24 @@ jobs:
           pip install flit
           flit install --deps develop
 
-      - name: Bump version and commit changes
-        # if: ${{ github.event_name == 'workflow_call' }}
-        run: |
-          git config --global user.name 'Your Name'
-          git config --global user.email 'hazedd@users.noreply.github.com'
-          make bumpversion-build
-          git commit -am "Bump version [skip ci]"  # Skip CI to avoid recursive runs
-          git push
-
-#      - name: Bake cli apps with PyInstaller
+#      - name: Bump version and commit changes
+#        if: ${{ github.event_name == 'workflow_call' }}
 #        run: |
-#          python -m PyInstaller imxInsightsCli/imxDiffCli/imx_diff.py --onefile --add-data "${{ env.pythonLocation }}/Lib/site-packages/imxInsights/custom_puic_config.yaml:imxInsights/." --icon=imxInsightsCli/imxDiffCli/diff.ico
-#
-#      - name: Create IMX diff artifact
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: windows_cli_diff_app
-#          path: |
-#            ${{ github.workspace }}/dist/imx_diff.exe
+#          git config --global user.name 'Your Name'
+#          git config --global user.email 'hazedd@users.noreply.github.com'
+#          make bumpversion-build
+#          git commit -am "Bump version [skip ci]"  # Skip CI to avoid recursive runs
+#          git push
+
+      - name: Bake cli apps with PyInstaller
+        run: |
+          python -m PyInstaller imxInsightsCli/imxDiffCli/imx_diff.py --onefile --add-data "${{ env.pythonLocation }}/Lib/site-packages/imxInsights/custom_puic_config.yaml:imxInsights/." --icon=imxInsightsCli/imxDiffCli/diff.ico
+
+      - name: Create IMX diff artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: windows_cli_diff_app
+          path: |
+            ${{ github.workspace }}/dist/imx_diff.exe
 
       # todo: create release and add artifact
