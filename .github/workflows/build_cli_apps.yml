@@ -52,18 +52,26 @@ jobs:
 #          git commit -am "Bump version [skip ci]"  # Skip CI to avoid recursive runs
 #          git push
 
+      - name: Extract version
+        id: set_version
+        shell: pwsh
+        run: |
+          $VERSION = python -c "import re; print(re.search('__version__ = `"(.*)`"', open('imxDiffCli/__init__.py').read()).group(1))"
+          echo "VERSION=$VERSION" | Out-File -FilePath $env:GITHUB_ENV -Append
+          echo "::set-output name=version::$VERSION"
+
       - name: Bake cli apps with PyInstaller
         shell: pwsh
         run: |
-          $VERSION = python -c "import re; print(re.search('__version__ = `"(.*)`"', open('imxInsightsCli/imxDiffCli/__init__.py').read()).group(1))"
+          $VERSION = Get-Content $env:GITHUB_ENV | Select-String -Pattern "^VERSION=" | ForEach-Object { $_ -replace "^VERSION=", "" }
           Write-Host "Building version $VERSION..."
           python -m PyInstaller imxInsightsCli/imxDiffCli/imx_diff.py --onefile --add-data "${{ env.pythonLocation }}/Lib/site-packages/imxInsights/custom_puic_config.yaml:imxInsights/." --icon=imxInsightsCli/imxDiffCli/diff.ico --name ImxDiff-$VERSION
 
       - name: Create IMX diff artifact
         uses: actions/upload-artifact@v3
         with:
-          name: windows_cli_diff_app
-          path: |
-            ${{ github.workspace }}/dist/imx_diff.exe
+          name: ImxDiff-${{ steps.set_version.outputs.version }}-windows.exe
+          path: dist/ImxDiff-${{ steps.set_version.outputs.version }}.exe
+
 
       # todo: create release and add artifact
