@@ -53,9 +53,10 @@ jobs:
 #          git push
 
       - name: Bake cli apps with PyInstaller
+        shell: pwsh
         run: |
-          VERSION=$(python -c "import re; print(re.search('__version__ = \"(.*?)\"', open('${{ github.workspace }}/imxDiffCli/__init__.py').read()).group(1))")
-          echo "Building version $VERSION..."
+          $VERSION = python -c "import re; print(re.search('__version__ = `"(.*)`"', open('imxInsightsCli/imxDiffCli/__init__.py').read()).group(1))"
+          Write-Host "Building version $VERSION..."
           python -m PyInstaller imxInsightsCli/imxDiffCli/imx_diff.py --onefile --add-data "${{ env.pythonLocation }}/Lib/site-packages/imxInsights/custom_puic_config.yaml:imxInsights/." --icon=imxInsightsCli/imxDiffCli/diff.ico --name ImxDiff-$VERSION
 
       - name: Create IMX diff artifact
