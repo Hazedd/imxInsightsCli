@@ -19,8 +19,10 @@ class UitwisselScopeExcelPath(Widget):
 
     DEFAULT_CSS = """
     UitwisselScopeExcelPath {
-        height: auto;
+        height: 2;
         border: solid red;
+        visibility: hidden;
+        
     }
     UitwisselScopeExcelPath Label {
         width: 12;
