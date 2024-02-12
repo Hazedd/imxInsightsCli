@@ -56,7 +56,7 @@ jobs:
         id: set_version
         shell: pwsh
         run: |
-          $VERSION = python -c "import re; print(re.search('__version__ = `"(.*)`"', open('imxDiffCli/__init__.py').read()).group(1))"
+          $VERSION = python -c "import re; print(re.search('__version__ = `"(.*)`"', open('imxInsightsCli/imxDiffCli/__init__.py').read()).group(1))"
           echo "VERSION=$VERSION" | Out-File -FilePath $env:GITHUB_ENV -Append
           echo "::set-output name=version::$VERSION"
 
