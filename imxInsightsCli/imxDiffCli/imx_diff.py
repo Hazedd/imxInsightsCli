@@ -118,7 +118,6 @@ Additionally, this tool provides the ability to create GeoJSON files to document
 
                 file_dict[file.imx_a_or_b] = {"file": file.query_one("InputWithLabel Input").value, "situation": situation}
 
-            # todo: check if situations exist
 
             output_folder = self.query_one("#out_folder Input").value
             if output_folder == "":
@@ -163,36 +162,47 @@ Additionally, this tool provides the ability to create GeoJSON files to document
                 imx_situation_1 = imx.get_situation_repository(ImxSituationsEnum[imx_situation_1])
                 imx_situation_2 = imx_old.get_situation_repository(ImxSituationsEnum[imx_situation_2])
 
-                diff = ImxDiff(imx_situation_1, imx_situation_2)
+                # todo: check if situations exist
+                if not imx_situation_1:
+                    errors.append(f"Situation selected at file A not present in the file.")
+                if not imx_situation_2:
+                    errors.append(f"Situation selected at file B not present in the file.")
 
-                if event.button.id == "create_geojson":
-                    geojson_dict = diff.generate_geojson_dict()
+                if len(errors) > 0:
+                    self.notify("\n".join([item for item in warnings]), title="WARNING", severity="warning", timeout=10)
 
-                    for key, value in geojson_dict.items():
-                        geojson_out_path = Path(f"{output_folder}/geojosn/")
-                        geojson_out_path.mkdir(parents=True, exist_ok=True)
+                if imx_situation_1 and imx_situation_2:
+                    diff = ImxDiff(imx_situation_1, imx_situation_2)
 
-                        with open(f"{geojson_out_path}/{key}.geojson", mode="w") as file:
-                            file.write(dumps(value))
+                    if event.button.id == "create_geojson":
+                        geojson_dict = diff.generate_geojson_dict()
 
-                    self.notify(f"Created geojsons in {output_folder}", title="SUCCESS", severity="information", timeout=10)
+                        for key, value in geojson_dict.items():
+                            geojson_out_path = Path(f"{output_folder}/geojosn/")
+                            geojson_out_path.mkdir(parents=True, exist_ok=True)
 
-                elif event.button.id == "create_diff":
-                    diff.generate_excel(f"{output_folder}/_.xlsx")
-                    temp_diff = Path(f"{output_folder}/_.xlsx")
-                    file_name = f"diff-{time.strftime('%Y%m%d-%H%M%S')}.xlsx"
+                            with open(f"{geojson_out_path}/{key}.geojson", mode="w") as file:
+                                file.write(dumps(value))
 
-                    # add_scope = self.query_one("UitwisselScopeExcelPath SelectWithLabel Select").value == "True"
-                    if add_scope:
-                        excel_path = self.query_one("UitwisselScopeExcelPath InputWithLabel Input").value
-                        excel_scope = ExcelScope(Path(excel_path))
-                        selected_scopes = self.query_one("UitwisselScopeExcelPath SelectionList").selected
-                        excel_scope.add_scope(temp_diff, Path(f"{output_folder}/{file_name}"), selected_scopes)
-                        temp_diff.unlink()
-                    else:
-                        temp_diff.rename(f"{output_folder}/{file_name}")
+                        self.notify(f"Created geojsons in {output_folder}", title="SUCCESS", severity="information", timeout=10)
 
-                    self.notify(f"Created diff excel in {output_folder}", title="SUCCESS", severity="information", timeout=10)
+                    elif event.button.id == "create_diff":
+                        diff.generate_excel(f"{output_folder}/_.xlsx")
+                        temp_diff = Path(f"{output_folder}/_.xlsx")
+                        file_name = f"diff-{time.strftime('%Y%m%d-%H%M%S')}.xlsx"
+
+                        # add_scope = self.query_one("UitwisselScopeExcelPath SelectWithLabel Select").value == "True"
+                        if add_scope:
+                            excel_path = self.query_one("UitwisselScopeExcelPath InputWithLabel Input").value
+                            excel_scope = ExcelScope(Path(excel_path))
+                            selected_scopes = self.query_one("UitwisselScopeExcelPath SelectionList").selected
+                            excel_scope.add_scope(temp_diff, Path(f"{output_folder}/{file_name}"), selected_scopes)
+                            temp_diff.unlink()
+                        else:
+                            temp_diff.rename(f"{output_folder}/{file_name}")
+
+                        self.notify(f"Created diff excel in {output_folder}", title="SUCCESS", severity="information", timeout=10)
+        app.refresh()
 
 
 if __name__ == "__main__":

@@ -65,5 +65,10 @@ check-all: test lint typecheck # docs-publish
 
 check: lint typecheck
 
+INIT_FILE := imxInsightsCli/__init__.py
+VERSION := $(shell python -c "import re; print(re.search('__version__ = \"(.*?)\"', open('$(INIT_FILE)').read()).group(1))")
+APP_NAME := ImxDiff
+EXE_NAME := $(APP_NAME)-$(VERSION)
+
 build-cli-app:
-	python -m PyInstaller imxInsightsCli/imx_diff/imx_to_excel.py --onefile --add-data ".venv/Lib/site-packages/imxInsights/custom_puic_config.yaml:imxInsights/."
+	python -m PyInstaller imxInsightsCli/imxDiffCli/imx_diff.py --onefile --add-data ".venv/Lib/site-packages/imxInsights/custom_puic_config.yaml:imxInsights/." --name $(EXE_NAME)
