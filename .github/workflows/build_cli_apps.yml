@@ -72,7 +72,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ImxDiff-${{ steps.set_version.outputs.version }}-windows.exe
-          path: dist/ImxDiff-${{ steps.set_version.outputs.version }}-windows.exe
+          path: ${{ github.workspace }}/dist/ImxDiff-${{ steps.set_version.outputs.version }}-windows.exe
 
 
       # todo: create release and add artifact
