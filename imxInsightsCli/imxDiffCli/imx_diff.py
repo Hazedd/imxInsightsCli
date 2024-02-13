@@ -47,13 +47,17 @@ class ImxDiffApp(App):
     latest_release_on_github = get_latest_release_github("Hazedd", "imxInsightsCli")
 
     if latest_release_on_github is not None and latest_release_on_github.tag_name != imxDiffCliVersion:
-        warning_text = (f"\n⚠️ NOT THE LATEST STABLE VERSION: {latest_release_on_github.tag_name}!!\n")
+        warning_text = (f"\n⚠️ THIS IS NOT THE LATEST STABLE VERSION: {latest_release_on_github.tag_name}!!\n"
+                        f"if the higher this is a preview version, if version is lower you should grab it 😉\n")
 
     EXAMPLE_MARKDOWN = """
-# Welcome to IMX Diff Version <<APP_VERSION>> using ImxInsights: <<BACKEND_VERSION>>!
+# Welcome to IMX Diff using the awesome python library ImxInsights!
+### version <<APP_VERSION>>
 <<WARNING_MSG>>
 IMX Diff CLI solution for comparing IMX files and generating comprehensive insights in Excel format.
 Additionally, this tool provides the ability to create GeoJSON files to document the differences between IMX datasets.
+
+We use imxInsights <<BACKEND_VERSION>> in the background.
 
 ## when interested in a population, just diff same file, same situation 😉.
 
@@ -61,7 +65,11 @@ Additionally, this tool provides the ability to create GeoJSON files to document
 - set the file path to the imx file.
 - select the situation to diff.
 - to copy a file path use "control + shift + v" 😊,.. remove the '"' on start and end position 😉.
-
+    - To enable this right-click on the title bar of the Command Prompt window.
+    - Select "Properties" from the context menu.
+    - In the Properties window, go to the "Options" tab.
+    - Look for "Enable Ctrl key shortcuts" option and make sure it's checked.
+    
 ### Output folder:
 - set the output folder path where a folder called output will be created.
 - overwriting is not implemented and disabled, make sure it's empty.
@@ -154,7 +162,6 @@ Additionally, this tool provides the ability to create GeoJSON files to document
                 imx_situation_1 = imx.get_situation_repository(ImxSituationsEnum[imx_situation_1])
                 imx_situation_2 = imx_old.get_situation_repository(ImxSituationsEnum[imx_situation_2])
 
-                # todo: check if situations exist
                 if not imx_situation_1:
                     errors.append(f"Situation selected at file A not present in the file.")
                 if not imx_situation_2:
@@ -167,6 +174,10 @@ Additionally, this tool provides the ability to create GeoJSON files to document
                     diff = ImxDiff(imx_situation_1, imx_situation_2)
 
                     if event.button.id == "create_geojson":
+
+                        # todo: create area geojsons
+
+
                         geojson_dict = diff.generate_geojson_dict()
 
                         for key, value in geojson_dict.items():
