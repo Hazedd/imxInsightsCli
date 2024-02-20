@@ -47,10 +47,13 @@ class ImxDiffApp(App):
     latest_release_on_github = get_latest_release_github("Hazedd", "imxInsightsCli")
 
     if latest_release_on_github is not None and latest_release_on_github.tag_name != imxDiffCliVersion:
-        warning_text = (f"\n⚠️ THIS IS NOT THE LATEST STABLE VERSION ({latest_release_on_github.tag_name})\n"
-                        f"if the current version is lower you should grab it 😉\n")
-
-    EXAMPLE_MARKDOWN = """
+        warning_text = (
+            f"\n⚠️ THIS IS NOT THE LATEST STABLE VERSION ({latest_release_on_github.tag_name})\n"
+            f"if the current version is lower you should grab it 😉\n"
+        )
+    # flake8: noqa W293
+    EXAMPLE_MARKDOWN = (
+        """
 # Welcome to IMX Diff <<APP_VERSION>>!
 <<WARNING_MSG>>
 IMX Diff CLI solution for comparing IMX files and generating comprehensive insights in Excel format.
@@ -68,18 +71,17 @@ We use the awesome python library ImxInsights <<BACKEND_VERSION>> in the backgro
     - Select "Properties" from the context menu.
     - In the Properties window, go to the "Options" tab.
     - Look for "Enable Ctrl key shortcuts" option and make sure it's checked.
-    
+     
 ### Output folder:
 - set the output folder path where a folder called output will be created.
 - overwriting is not implemented and disabled, make sure it's empty.
 - if kept empty the root of the application is the output folder.
 
     """.replace(
-        "<<APP_VERSION>>", f"{imxDiffCliVersion}"
-    ).replace(
-        "<<BACKEND_VERSION>>", imxInsightsVersion
-    ).replace(
-        "<<WARNING_MSG>>", warning_text
+            "<<APP_VERSION>>", f"{imxDiffCliVersion}"
+        )
+        .replace("<<BACKEND_VERSION>>", imxInsightsVersion)
+        .replace("<<WARNING_MSG>>", warning_text)
     )
 
     def compose(self) -> ComposeResult:
@@ -116,7 +118,6 @@ We use the awesome python library ImxInsights <<BACKEND_VERSION>> in the backgro
                     errors.append(f"IMX {file.imx_a_or_b}: does not have a selected situation")
 
                 file_dict[file.imx_a_or_b] = {"file": file.query_one("InputWithLabel Input").value, "situation": situation}
-
 
             output_folder = self.query_one("#out_folder Input").value
             if output_folder == "":
@@ -162,9 +163,9 @@ We use the awesome python library ImxInsights <<BACKEND_VERSION>> in the backgro
                 imx_situation_2 = imx_old.get_situation_repository(ImxSituationsEnum[imx_situation_2])
 
                 if not imx_situation_1:
-                    errors.append(f"Situation selected at file A not present in the file.")
+                    errors.append("Situation selected at file A not present in the file.")
                 if not imx_situation_2:
-                    errors.append(f"Situation selected at file B not present in the file.")
+                    errors.append("Situation selected at file B not present in the file.")
 
                 if len(errors) > 0:
                     self.notify("\n".join([item for item in warnings]), title="WARNING", severity="warning", timeout=10)
@@ -173,9 +174,7 @@ We use the awesome python library ImxInsights <<BACKEND_VERSION>> in the backgro
                     diff = ImxDiff(imx_situation_1, imx_situation_2)
 
                     if event.button.id == "create_geojson":
-
                         # todo: create area geojsons
-
 
                         geojson_dict = diff.generate_geojson_dict()
 

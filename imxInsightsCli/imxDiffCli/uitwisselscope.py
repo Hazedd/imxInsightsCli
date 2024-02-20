@@ -17,12 +17,13 @@ class UitwisselScopeExcelPath(Widget):
 
     # todo: implement imx path validation on path and extension, maybe present of as-dataset and info sheet?
 
+    # flake8: noqa W293
     DEFAULT_CSS = """
     UitwisselScopeExcelPath {
         height: 2;
         border: solid red;
         visibility: hidden;
-        
+            
     }
     UitwisselScopeExcelPath Label {
         width: 12;
@@ -48,7 +49,7 @@ class UitwisselScopeExcelPath(Widget):
         width: 100%;
         text-align: center;
     }
-    """
+    """  # noqa: E731,E123
 
     def __init__(self) -> None:
         self._excel_scope: Optional[ExcelScope] = None
@@ -59,7 +60,7 @@ class UitwisselScopeExcelPath(Widget):
         yield Horizontal(
             InputWithLabel("Excel path", optional=True, validators=[ScopeExcelValidator()]),
             SelectWithLabel("add scope", ["False", "True"]),
-            disabled=True
+            disabled=True,
         )
         yield SelectionList[int](("missing excel path", "missing", False), disabled=True)
 
