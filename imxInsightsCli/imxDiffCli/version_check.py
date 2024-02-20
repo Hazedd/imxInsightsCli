@@ -16,16 +16,19 @@ class GitHubRelease:
 def get_latest_release_github(repo_owner: str, repo_name: str) -> Optional[GitHubRelease]:
     url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/releases/latest"
 
-    response = requests.get(url)
+    try:
+        response = requests.get(url)
 
-    if response.status_code == 200:
-        release_info = response.json()
-        return GitHubRelease(
-            owner=repo_owner, repo=repo_name,
-            name=release_info['name'], tag_name=release_info['tag_name'], published_at=release_info['published_at']
-        )
-
-    else:
+        if response.status_code == 200:
+            release_info = response.json()
+            return GitHubRelease(
+                owner=repo_owner, repo=repo_name,
+                name=release_info['name'], tag_name=release_info['tag_name'], published_at=release_info['published_at']
+            )
+        else:
+            return None
+    except Exception as e:
+        _ = e
         return None
 
 

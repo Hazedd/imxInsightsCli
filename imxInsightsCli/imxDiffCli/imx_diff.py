@@ -47,17 +47,16 @@ class ImxDiffApp(App):
     latest_release_on_github = get_latest_release_github("Hazedd", "imxInsightsCli")
 
     if latest_release_on_github is not None and latest_release_on_github.tag_name != imxDiffCliVersion:
-        warning_text = (f"\n⚠️ THIS IS NOT THE LATEST STABLE VERSION: {latest_release_on_github.tag_name}!!\n"
-                        f"if the higher this is a preview version, if version is lower you should grab it 😉\n")
+        warning_text = (f"\n⚠️ THIS IS NOT THE LATEST STABLE VERSION ({latest_release_on_github.tag_name})\n"
+                        f"if the current version is lower you should grab it 😉\n")
 
     EXAMPLE_MARKDOWN = """
-# Welcome to IMX Diff using the awesome python library ImxInsights!
-### version <<APP_VERSION>>
+# Welcome to IMX Diff <<APP_VERSION>>!
 <<WARNING_MSG>>
 IMX Diff CLI solution for comparing IMX files and generating comprehensive insights in Excel format.
-Additionally, this tool provides the ability to create GeoJSON files to document the differences between IMX datasets.
+Additionally, this tool provides the ability to create GeoJSON files so we can differences on a map.
 
-We use imxInsights <<BACKEND_VERSION>> in the background.
+We use the awesome python library ImxInsights <<BACKEND_VERSION>> in the background.
 
 ## when interested in a population, just diff same file, same situation 😉.
 
