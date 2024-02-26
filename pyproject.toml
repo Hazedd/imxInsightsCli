@@ -24,6 +24,7 @@ dependencies = [
     "textual-fspicker",
     "textual",
     "Jinja2",
+    "nest-asyncio",  # todo: remove when included in core
 ]
 
 [project.optional-dependencies]
