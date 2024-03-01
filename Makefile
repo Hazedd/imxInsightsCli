@@ -71,4 +71,4 @@ APP_NAME := ImxDiff
 EXE_NAME := $(APP_NAME)-$(VERSION)
 
 build-cli-app:
-	python -m PyInstaller imxInsightsCli/imxDiffCli/imx_diff.py --onefile --add-data ".venv/Lib/site-packages/imxInsights/custom_puic_config.yaml:imxInsights/." --name $(EXE_NAME)
+	python -m PyInstaller imxInsightsCli/imxDiffCli/imx_diff.py --onefile --add-data "venv/Lib/site-packages/imxInsights/custom_puic_config.yaml:imxInsights/." --name $(EXE_NAME)

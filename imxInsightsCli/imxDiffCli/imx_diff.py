@@ -207,5 +207,9 @@ We use the awesome python library ImxInsights <<BACKEND_VERSION>> in the backgro
 
 
 if __name__ == "__main__":
-    app = ImxDiffApp()
-    app.run()
+    try:
+        app = ImxDiffApp()
+        app.run()
+    except Exception as e:
+        print(e)
+        input("hit key to exit")
