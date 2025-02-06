@@ -67,7 +67,7 @@ jobs:
           python -m PyInstaller imxInsightsCli/imxDiffCli/imx_diff.py --onefile --add-data "${{ env.pythonLocation }}/Lib/site-packages/imxInsights/custom_puic_config.yaml:imxInsights/." --icon=imxInsightsCli/imxDiffCli/diff.ico --name ImxDiff-${{ steps.set_version.outputs.version }}-windows
 
       - name: Create IMX diff artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ImxDiff-${{ steps.set_version.outputs.version }}-windows.exe
           path: ${{ github.workspace }}\dist\ImxDiff-${{ steps.set_version.outputs.version }}-windows.exe
